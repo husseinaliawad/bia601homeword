@@ -1,33 +1,52 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BIA601 - تحسين توصيات المتجر الإلكتروني</title>
+    <title>BIA601 - منصة تحسين التوصيات</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Changa:wght@500;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
+    <div class="bg-shape shape-a"></div>
+    <div class="bg-shape shape-b"></div>
+
     <main class="container">
-      <section class="hero">
-        <p class="badge">BIA601 - S25</p>
-        <h1>تحسين توصيات المتجر الإلكتروني باستخدام الخوارزمية الجينية متعددة المعايير</h1>
-        <p>
-          التطبيق يقرأ بيانات المستخدمين والمنتجات والتقييمات والسلوك الشرائي، ثم يبني توصيات أساسية
-          ويستخدم خوارزمية جينية لتحسين أوزان المعايير (الاهتمام بالفئة، التفاعل، السعر، الشعبية)
-          للحصول على توصيات أدق.
+      <section class="hero reveal">
+        <div class="hero-top">
+          <p class="badge">BIA601 / Smart Algorithms</p>
+          <p class="hero-mini">Genetic Recommendation Optimizer</p>
+        </div>
+        <h1>لوحة تحسين توصيات المتجر الإلكتروني</h1>
+        <p class="hero-copy">
+          المنصة تولّد قائمة توصيات أساسية ثم تعيد تحسينها بخوارزمية جينية متعددة المعايير للوصول
+          إلى نتائج أكثر دقة لكل مستخدم.
         </p>
+        <div class="hero-meta">
+          <article>
+            <span>المستخدمون</span>
+            <strong><%= datasetSummary.users %></strong>
+          </article>
+          <article>
+            <span>المنتجات</span>
+            <strong><%= datasetSummary.products %></strong>
+          </article>
+          <article>
+            <span>السجلات السلوكية</span>
+            <strong><%= datasetSummary.behavior %></strong>
+          </article>
+        </div>
       </section>
 
-      <section class="panel">
-        <h2>اختيار المستخدم</h2>
+      <section class="panel reveal delay-1">
+        <h2>اختيار المستخدم وتحليل التوصيات</h2>
         <form method="GET" action="/">
-          <label for="userId">المستخدم</label>
+          <label for="userId">اختر مستخدمًا لعرض توصياته</label>
           <div class="form-row">
             <select id="userId" name="userId">
               <% users.forEach((user) => { %>
@@ -39,70 +58,57 @@
               </option>
               <% }); %>
             </select>
-            <button type="submit">توليد التوصيات</button>
+            <button type="submit">تحديث النتائج</button>
           </div>
         </form>
       </section>
 
       <% if (error) { %>
-      <section class="panel error">
-        <h2>خطأ</h2>
+      <section class="panel error reveal">
+        <h2>تعذر توليد التوصيات</h2>
         <p><%= error %></p>
       </section>
       <% } %>
 
       <% if (result) { %>
-      <section class="stats-grid">
+      <section class="stats-grid reveal delay-2">
         <article class="stat-card">
-          <p>جودة الحل الأساسي</p>
+          <p>Fitness الأساسي</p>
           <strong><%= result.metrics.baseline_fitness %></strong>
         </article>
-        <article class="stat-card">
-          <p>جودة الحل بعد التحسين</p>
+        <article class="stat-card active">
+          <p>Fitness بعد التحسين</p>
           <strong><%= result.metrics.optimized_fitness %></strong>
         </article>
-        <article class="stat-card">
+        <article class="stat-card <%= result.metrics.uplift_percent >= 0 ? "positive" : "negative" %>">
           <p>نسبة التحسن</p>
           <strong><%= result.metrics.uplift_percent %>%</strong>
         </article>
         <article class="stat-card">
-          <p>السعر المفضل للمستخدم</p>
+          <p>السعر المفضل</p>
           <strong><%= result.profile.preferred_price %></strong>
         </article>
       </section>
 
-      <section class="panel qa">
-        <h2>1) ما معنى تحسين التوصيات؟</h2>
-        <p>
-          تحسين التوصيات يعني رفع جودة المنتجات المعروضة لكل مستخدم بحيث تصبح أقرب إلى اهتماماته
-          الفعلية، وبالتالي يرتفع احتمال النقر، الإضافة إلى السلة، والشراء.
-        </p>
-        <h2>2) كيف تساعد الخوارزميات الجينية في التحسين؟</h2>
-        <p>
-          في هذه النسخة نُعامل أوزان معايير التوصية ككروموسوم. الخوارزمية الجينية تولّد أوزانًا
-          مختلفة، تقيّمها وفق جودة التوصيات الناتجة، ثم تطبق الانتقاء والتهجين والطفرات للوصول إلى
-          أفضل مزيج أوزان لكل مستخدم.
-        </p>
-      </section>
-
-      <section class="recommendation-grid">
-        <article class="panel">
-          <h2>القائمة الأساسية (قبل التحسين)</h2>
+      <section class="recommendation-grid reveal delay-3">
+        <article class="panel table-panel">
+          <h2>قبل التحسين</h2>
+          <p class="panel-subtitle">ترتيب المنتجات بالأوزان الافتراضية</p>
           <table>
             <thead>
               <tr>
-                <th>الترتيب</th>
-                <th>المنتج</th>
-                <th>الفئة</th>
-                <th>السعر</th>
-                <th>الدرجة</th>
+                <th>رتبة</th>
+                <th>منتج</th>
+                <th>فئة</th>
+                <th>سعر</th>
+                <th>درجة</th>
               </tr>
             </thead>
             <tbody>
               <% result.baseline.forEach((item) => { %>
               <tr>
                 <td><%= item.rank %></td>
-                <td><%= item.product_id %></td>
+                <td>#<%= item.product_id %></td>
                 <td><%= item.category %></td>
                 <td><%= item.price %></td>
                 <td><%= item.predicted_score %></td>
@@ -112,23 +118,24 @@
           </table>
         </article>
 
-        <article class="panel">
-          <h2>القائمة المحسنة (بعد GA)</h2>
+        <article class="panel table-panel">
+          <h2>بعد التحسين الجيني</h2>
+          <p class="panel-subtitle">الترتيب الناتج عن الأوزان المتعلمة</p>
           <table>
             <thead>
               <tr>
-                <th>الترتيب</th>
-                <th>المنتج</th>
-                <th>الفئة</th>
-                <th>السعر</th>
-                <th>الدرجة</th>
+                <th>رتبة</th>
+                <th>منتج</th>
+                <th>فئة</th>
+                <th>سعر</th>
+                <th>درجة</th>
               </tr>
             </thead>
             <tbody>
               <% result.optimized.forEach((item) => { %>
               <tr>
                 <td><%= item.rank %></td>
-                <td><%= item.product_id %></td>
+                <td>#<%= item.product_id %></td>
                 <td><%= item.category %></td>
                 <td><%= item.price %></td>
                 <td><%= item.predicted_score %></td>
@@ -139,48 +146,43 @@
         </article>
       </section>
 
-      <section class="panel qa">
-        <h2>الأوزان المتعلمة للمستخدم</h2>
-        <p>
-          الأساسي: اهتمام الفئة <%= result.optimization.default_weights.category_affinity %> |
-          التفاعل <%= result.optimization.default_weights.category_engagement %> |
-          توافق السعر <%= result.optimization.default_weights.price_alignment %> |
-          الشعبية <%= result.optimization.default_weights.popularity %>
-        </p>
-        <p>
-          المحسن: اهتمام الفئة <%= result.optimization.optimized_weights.category_affinity %> |
-          التفاعل <%= result.optimization.optimized_weights.category_engagement %> |
-          توافق السعر <%= result.optimization.optimized_weights.price_alignment %> |
-          الشعبية <%= result.optimization.optimized_weights.popularity %>
-        </p>
-        <p>
-          المقاييس المحسنة: Relevance = <%= result.optimized_objectives.relevance %> |
-          Diversity = <%= result.optimized_objectives.diversity %> |
-          Novelty = <%= result.optimized_objectives.novelty %> |
-          Price Harmony = <%= result.optimized_objectives.price_harmony %>
-        </p>
+      <section class="panel weights reveal delay-4">
+        <h2>مقارنة الأوزان</h2>
+        <div class="weights-grid">
+          <article>
+            <h3>الأساسي</h3>
+            <p>Affinity: <strong><%= result.optimization.default_weights.category_affinity %></strong></p>
+            <p>Engagement: <strong><%= result.optimization.default_weights.category_engagement %></strong></p>
+            <p>Price: <strong><%= result.optimization.default_weights.price_alignment %></strong></p>
+            <p>Popularity: <strong><%= result.optimization.default_weights.popularity %></strong></p>
+          </article>
+          <article>
+            <h3>المحسن</h3>
+            <p>Affinity: <strong><%= result.optimization.optimized_weights.category_affinity %></strong></p>
+            <p>Engagement: <strong><%= result.optimization.optimized_weights.category_engagement %></strong></p>
+            <p>Price: <strong><%= result.optimization.optimized_weights.price_alignment %></strong></p>
+            <p>Popularity: <strong><%= result.optimization.optimized_weights.popularity %></strong></p>
+          </article>
+          <article>
+            <h3>مؤشرات الجودة</h3>
+            <p>Relevance: <strong><%= result.optimized_objectives.relevance %></strong></p>
+            <p>Diversity: <strong><%= result.optimized_objectives.diversity %></strong></p>
+            <p>Novelty: <strong><%= result.optimized_objectives.novelty %></strong></p>
+            <p>Price Harmony: <strong><%= result.optimized_objectives.price_harmony %></strong></p>
+          </article>
+        </div>
       </section>
       <% } %>
 
-      <section class="panel">
-        <h2>المرجع العلمي المعتمد (2024-2026)</h2>
-        <p><strong><%= paper.title %></strong></p>
-        <p><%= paper.authors %></p>
-        <p><%= paper.journal %></p>
+      <section class="panel reference reveal delay-5">
+        <h2>المرجع العلمي</h2>
+        <p class="ref-title"><%= paper.title %></p>
+        <p><%= paper.authors %> - <%= paper.journal %></p>
         <p>
           DOI:
-          <a href="<%= paper.url %>" target="_blank" rel="noreferrer noopener"
-            ><%= paper.doi %></a
-          >
+          <a href="<%= paper.url %>" target="_blank" rel="noreferrer noopener"><%= paper.doi %></a>
         </p>
-      </section>
-
-      <section class="panel small">
-        <h2>ملخص البيانات المستخدمة</h2>
-        <p>users.xlsx: <%= datasetSummary.users %> سجل</p>
-        <p>products.xlsx: <%= datasetSummary.products %> سجل</p>
-        <p>ratings.xlsx: <%= datasetSummary.ratings %> سجل</p>
-        <p><%= behaviorFile %>: <%= datasetSummary.behavior %> سجل</p>
+        <p class="tiny-note">Behavior source: <strong><%= behaviorFile %></strong></p>
       </section>
     </main>
   </body>
