@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BIA601 - تحسين توصيات المتجر الإلكتروني</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="hero">
+        <p class="badge">BIA601 - S25</p>
+        <h1>تحسين توصيات المتجر الإلكتروني باستخدام الخوارزمية الجينية متعددة المعايير</h1>
+        <p>
+          التطبيق يقرأ بيانات المستخدمين والمنتجات والتقييمات والسلوك الشرائي، ثم يبني توصيات أساسية
+          ويستخدم خوارزمية جينية لتحسين أوزان المعايير (الاهتمام بالفئة، التفاعل، السعر، الشعبية)
+          للحصول على توصيات أدق.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>اختيار المستخدم</h2>
+        <form method="GET" action="/">
+          <label for="userId">المستخدم</label>
+          <div class="form-row">
+            <select id="userId" name="userId">
+              <% users.forEach((user) => { %>
+              <option
+                value="<%= user.user_id %>"
+                <%= selectedUserId === user.user_id ? "selected" : "" %>
+              >
+                المستخدم <%= user.user_id %> - العمر <%= user.age %> - <%= user.country %>
+              </option>
+              <% }); %>
+            </select>
+            <button type="submit">توليد التوصيات</button>
+          </div>
+        </form>
+      </section>
+
+      <% if (error) { %>
+      <section class="panel error">
+        <h2>خطأ</h2>
+        <p><%= error %></p>
+      </section>
+      <% } %>
+
+      <% if (result) { %>
+      <section class="stats-grid">
+        <article class="stat-card">
+          <p>جودة الحل الأساسي</p>
+          <strong><%= result.metrics.baseline_fitness %></strong>
+        </article>
+        <article class="stat-card">
+          <p>جودة الحل بعد التحسين</p>
+          <strong><%= result.metrics.optimized_fitness %></strong>
+        </article>
+        <article class="stat-card">
+          <p>نسبة التحسن</p>
+          <strong><%= result.metrics.uplift_percent %>%</strong>
+        </article>
+        <article class="stat-card">
+          <p>السعر المفضل للمستخدم</p>
+          <strong><%= result.profile.preferred_price %></strong>
+        </article>
+      </section>
+
+      <section class="panel qa">
+        <h2>1) ما معنى تحسين التوصيات؟</h2>
+        <p>
+          تحسين التوصيات يعني رفع جودة المنتجات المعروضة لكل مستخدم بحيث تصبح أقرب إلى اهتماماته
+          الفعلية، وبالتالي يرتفع احتمال النقر، الإضافة إلى السلة، والشراء.
+        </p>
+        <h2>2) كيف تساعد الخوارزميات الجينية في التحسين؟</h2>
+        <p>
+          في هذه النسخة نُعامل أوزان معايير التوصية ككروموسوم. الخوارزمية الجينية تولّد أوزانًا
+          مختلفة، تقيّمها وفق جودة التوصيات الناتجة، ثم تطبق الانتقاء والتهجين والطفرات للوصول إلى
+          أفضل مزيج أوزان لكل مستخدم.
+        </p>
+      </section>
+
+      <section class="recommendation-grid">
+        <article class="panel">
+          <h2>القائمة الأساسية (قبل التحسين)</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>الترتيب</th>
+                <th>المنتج</th>
+                <th>الفئة</th>
+                <th>السعر</th>
+                <th>الدرجة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% result.baseline.forEach((item) => { %>
+              <tr>
+                <td><%= item.rank %></td>
+                <td><%= item.product_id %></td>
+                <td><%= item.category %></td>
+                <td><%= item.price %></td>
+                <td><%= item.predicted_score %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <h2>القائمة المحسنة (بعد GA)</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>الترتيب</th>
+                <th>المنتج</th>
+                <th>الفئة</th>
+                <th>السعر</th>
+                <th>الدرجة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% result.optimized.forEach((item) => { %>
+              <tr>
+                <td><%= item.rank %></td>
+                <td><%= item.product_id %></td>
+                <td><%= item.category %></td>
+                <td><%= item.price %></td>
+                <td><%= item.predicted_score %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </article>
+      </section>
+
+      <section class="panel qa">
+        <h2>الأوزان المتعلمة للمستخدم</h2>
+        <p>
+          الأساسي: اهتمام الفئة <%= result.optimization.default_weights.category_affinity %> |
+          التفاعل <%= result.optimization.default_weights.category_engagement %> |
+          توافق السعر <%= result.optimization.default_weights.price_alignment %> |
+          الشعبية <%= result.optimization.default_weights.popularity %>
+        </p>
+        <p>
+          المحسن: اهتمام الفئة <%= result.optimization.optimized_weights.category_affinity %> |
+          التفاعل <%= result.optimization.optimized_weights.category_engagement %> |
+          توافق السعر <%= result.optimization.optimized_weights.price_alignment %> |
+          الشعبية <%= result.optimization.optimized_weights.popularity %>
+        </p>
+        <p>
+          المقاييس المحسنة: Relevance = <%= result.optimized_objectives.relevance %> |
+          Diversity = <%= result.optimized_objectives.diversity %> |
+          Novelty = <%= result.optimized_objectives.novelty %> |
+          Price Harmony = <%= result.optimized_objectives.price_harmony %>
+        </p>
+      </section>
+      <% } %>
+
+      <section class="panel">
+        <h2>المرجع العلمي المعتمد (2024-2026)</h2>
+        <p><strong><%= paper.title %></strong></p>
+        <p><%= paper.authors %></p>
+        <p><%= paper.journal %></p>
+        <p>
+          DOI:
+          <a href="<%= paper.url %>" target="_blank" rel="noreferrer noopener"
+            ><%= paper.doi %></a
+          >
+        </p>
+      </section>
+
+      <section class="panel small">
+        <h2>ملخص البيانات المستخدمة</h2>
+        <p>users.xlsx: <%= datasetSummary.users %> سجل</p>
+        <p>products.xlsx: <%= datasetSummary.products %> سجل</p>
+        <p>ratings.xlsx: <%= datasetSummary.ratings %> سجل</p>
+        <p><%= behaviorFile %>: <%= datasetSummary.behavior %> سجل</p>
+      </section>
+    </main>
+  </body>
+</html>
