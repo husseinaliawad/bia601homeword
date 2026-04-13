@@ -64,3 +64,12 @@ DOI: https://doi.org/10.48550/arXiv.2402.08371
 - Keep all work on Git with commit history.
 - Deadline: **May 5, 2026**.
 
+## 7) Deploy on Render
+
+- This repo includes:
+  - `Dockerfile`
+  - `render.yaml`
+- Render will deploy as a Docker Web Service and use:
+  - `PORT` environment variable
+  - health check endpoint: `/health`
+

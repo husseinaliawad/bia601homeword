@@ -64,6 +64,14 @@ app.get("/api/recommendations/:userId", (req, res) => {
   }
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ ok: true, service: "bia601homeword" });
+});
+
+app.use((req, res) => {
+  res.redirect("/");
+});
+
 app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`Server is running on http://localhost:${port}`);
